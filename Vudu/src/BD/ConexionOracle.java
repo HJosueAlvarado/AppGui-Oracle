@@ -7,9 +7,9 @@ import javax.swing.JOptionPane;
 
 public class ConexionOracle {
 
-    private static final String URL = "jdbc:oracle:thin:@localhost:1522:orcl";
-    private static final String USUARIO = "Axel";
-    private static final String CONTRASENA = "123";
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:ORCL";
+    private static final String USUARIO = "HJOSUE";
+    private static final String CONTRASENA = "12345";
 
     public static Connection conectar() {
         Connection con = null;

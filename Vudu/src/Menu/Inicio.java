@@ -6,10 +6,10 @@ package Menu;
 
 import formularios.Frm_categoria;
 import formularios.Frm_cliente;
+import formularios.Frm_factura;
 import formularios.Frm_producto;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import formularios.Frm_reserva;
+import formularios.Frm_venta;
 import login.Login;
 
 
@@ -37,9 +37,13 @@ public class Inicio extends javax.swing.JFrame {
         btnProductos = new javax.swing.JButton();
         btnCategorias = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
+        btnReservas = new javax.swing.JButton();
+        btnVentas = new javax.swing.JButton();
+        btnFacturas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HOME");
+        setBackground(new java.awt.Color(153, 153, 153));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 102));
@@ -82,18 +86,37 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        btnReservas.setBackground(new java.awt.Color(0, 102, 102));
+        btnReservas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReservas.setText("Reservas");
+        btnReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservasActionPerformed(evt);
+            }
+        });
+
+        btnVentas.setBackground(new java.awt.Color(0, 102, 102));
+        btnVentas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVentas.setText("Ventas");
+        btnVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVentasActionPerformed(evt);
+            }
+        });
+
+        btnFacturas.setBackground(new java.awt.Color(0, 102, 102));
+        btnFacturas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnFacturas.setText("Facturas");
+        btnFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(btnCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(104, 104, 104)
-                .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
-                .addComponent(btnProductos)
-                .addGap(62, 62, 62))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,6 +126,20 @@ public class Inicio extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(104, 104, 104)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(89, 89, 89)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(62, 62, 62))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,7 +151,12 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(LogoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -158,6 +200,33 @@ public class Inicio extends javax.swing.JFrame {
         ProductoFrame.setLocationRelativeTo(null); 
         this.dispose();
     }//GEN-LAST:event_btnProductosActionPerformed
+
+    private void btnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasActionPerformed
+        // TODO add your handling code here:
+        Frm_reserva ReservaFrame = new Frm_reserva();
+        ReservaFrame.setVisible(true);
+        ReservaFrame.pack();
+        ReservaFrame.setLocationRelativeTo(null); 
+        this.dispose();
+    }//GEN-LAST:event_btnReservasActionPerformed
+
+    private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
+        // TODO add your handling code here:
+        Frm_venta VentaFrame = new Frm_venta();
+        VentaFrame.setVisible(true);
+        VentaFrame.pack();
+        VentaFrame.setLocationRelativeTo(null); 
+        this.dispose();
+    }//GEN-LAST:event_btnVentasActionPerformed
+
+    private void btnFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasActionPerformed
+        // TODO add your handling code here:
+        Frm_factura FacturaFrame = new Frm_factura();
+        FacturaFrame.setVisible(true);
+        FacturaFrame.pack();
+        FacturaFrame.setLocationRelativeTo(null); 
+        this.dispose();
+    }//GEN-LAST:event_btnFacturasActionPerformed
     
     
     /**
@@ -201,7 +270,10 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton LogoutBtn;
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnFacturas;
     private javax.swing.JButton btnProductos;
+    private javax.swing.JButton btnReservas;
+    private javax.swing.JButton btnVentas;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

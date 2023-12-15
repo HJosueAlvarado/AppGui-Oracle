@@ -4,11 +4,14 @@
  */
 package formularios;
 
-import Menu.Inicio;
 import BD.ConexionOracle;
-import java.sql.*;
+import Menu.Inicio;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class Frm_cliente extends javax.swing.JFrame {
 
@@ -22,7 +25,16 @@ public class Frm_cliente extends javax.swing.JFrame {
     public Frm_cliente() {
         initComponents();
         setLocationRelativeTo(null);
-        listar();
+        
+        cargarDatos();
+
+        // Asociar el evento de clic al botón guardar
+        btnguardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
     }
 
     /**
@@ -43,21 +55,17 @@ public class Frm_cliente extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtApellido01 = new javax.swing.JTextField();
         txtApellido02 = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtCedula = new javax.swing.JTextField();
-        jComboBoxFecha = new javax.swing.JComboBox<>();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnguardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TableDatos = new javax.swing.JTable();
-        eventoNuevo = new javax.swing.JButton();
+        jtclientes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,8 +107,6 @@ public class Frm_cliente extends javax.swing.JFrame {
 
         jLabel7.setText("Cédula");
 
-        jLabel8.setText("Fecha");
-
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
@@ -116,13 +122,6 @@ public class Frm_cliente extends javax.swing.JFrame {
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCedulaActionPerformed(evt);
-            }
-        });
-
-        jComboBoxFecha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12/12/2023", "13/12/2023", "14/12/2023", "15/12/2023", "16/12/2023", "17/12/2023", "18/12/2023", "19/12/2023", "20/12/2023", "21/12/2023", "22/12/2023", "23/12/2023", " " }));
-        jComboBoxFecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxFechaActionPerformed(evt);
             }
         });
 
@@ -151,17 +150,14 @@ public class Frm_cliente extends javax.swing.JFrame {
                             .addComponent(txtApellido01)
                             .addComponent(txtApellido02)
                             .addComponent(txtTelefono))))
-                .addGap(464, 464, 464)
+                .addGap(458, 458, 458)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtEmail)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
-                    .addComponent(jComboBoxFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtEmail)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -182,31 +178,22 @@ public class Frm_cliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel8)
-                    .addComponent(txtApellido02, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtApellido02, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
 
-        btnAgregar.setText("Agregar");
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+        btnguardar.setText("Agregar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                btnguardarActionPerformed(evt);
             }
         });
 
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setText("Limpiar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -220,7 +207,7 @@ public class Frm_cliente extends javax.swing.JFrame {
             }
         });
 
-        TableDatos.setModel(new javax.swing.table.DefaultTableModel(
+        jtclientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -232,20 +219,12 @@ public class Frm_cliente extends javax.swing.JFrame {
                 "Cedula", "Nombre", "Apellido 01", "Apellido 02", "Fecha", "Email", "Teléfono"
             }
         ));
-        TableDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+        jtclientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TableDatosMouseClicked(evt);
+                jtclientesMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(TableDatos);
-
-        eventoNuevo.setBackground(new java.awt.Color(255, 255, 255));
-        eventoNuevo.setForeground(new java.awt.Color(204, 204, 204));
-        eventoNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eventoNuevoActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(jtclientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -263,13 +242,9 @@ public class Frm_cliente extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAtras)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(eventoNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnguardar)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -280,33 +255,48 @@ public class Frm_cliente extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(eventoNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnEditar)
-                        .addComponent(btnEliminar)
-                        .addComponent(btnAtras)))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnAtras)
+                    .addComponent(btnguardar))
+                .addGap(16, 16, 16))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        Agregar();
-        listar();
-        nuevo();
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        int cedulaCliente = Integer.parseInt(txtCedula.getText());
+        String nombreCliente = txtNombre.getText();
+        String apellido1Cliente = txtApellido01.getText();
+        String apellido2Cliente = txtApellido02.getText();
+        String telefonoCliente = txtTelefono.getText();
+        String emailCliente = txtEmail.getText();
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        modificar();
-        listar();
-        nuevo();
-    }//GEN-LAST:event_btnEditarActionPerformed
+
+    try (Connection connection = ConexionOracle.conectar()) {
+            String sql = "{call INSERTAR_CLIENTE(?, ?, ?, ?, ?, ?, ?, ?)}";
+            try ( CallableStatement callableStatement = connection.prepareCall(sql)) {
+                callableStatement.setInt(1, cedulaCliente);
+                callableStatement.setString(2, nombreCliente);
+                callableStatement.setString(3, apellido1Cliente);
+                callableStatement.setString(4, apellido2Cliente);
+                callableStatement.setString(5, telefonoCliente);
+                callableStatement.setString(6, emailCliente);
+
+                callableStatement.execute();
+
+                JOptionPane.showMessageDialog(null, "Inserción exitosa", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                // Actualizar el modelo de la tabla después de la inserción
+                cargarDatos(); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al insertar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnguardarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
@@ -326,68 +316,25 @@ public class Frm_cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminar();
-        listar();
-        nuevo();
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellido01.setText("");
+        txtApellido02.setText("");
+        txtTelefono.setText("");
+        txtEmail.setText("");
+        txtNombre.requestFocus();
         
     }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void jComboBoxFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxFechaActionPerformed
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCedulaActionPerformed
 
-    private void TableDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableDatosMouseClicked
-        int fila = TableDatos.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Cliente no seleccinado");
-        } else {
-            int cedula = Integer.parseInt((String) TableDatos.getValueAt(fila, 0).toString());
-            String nombre = (String) TableDatos.getValueAt(fila, 1);
-            String apellido1 = (String) TableDatos.getValueAt(fila, 2);
-            String apellido2 = (String) TableDatos.getValueAt(fila, 3);
-            String telefono = (String) TableDatos.getValueAt(fila, 4);
-            String email = (String) TableDatos.getValueAt(fila, 5);
-            txtCedula.setText("" + cedula);
-            txtNombre.setText("" + nombre);
-            txtApellido01.setText("" + apellido1);
-            txtApellido02.setText("" + apellido1);
-            txtTelefono.setText("" + telefono);
-            txtEmail.setText("" + email);
+    private void jtclientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtclientesMouseClicked
 
-        }
-    }//GEN-LAST:event_TableDatosMouseClicked
+    }//GEN-LAST:event_jtclientesMouseClicked
 
-    private void eventoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventoNuevoActionPerformed
-        nuevo();
-    }//GEN-LAST:event_eventoNuevoActionPerformed
-
-    void modificar() {
-        Integer cedula = Integer.parseInt(txtCedula.getText());
-        String nombre = txtNombre.getText();
-        String apellido1 = txtApellido01.getText();
-        String apellido2 = txtApellido02.getText();
-        String telefono = txtTelefono.getText();
-        String email = txtEmail.getText();
-        String sql = "update cliente set CEDULA='" + cedula + "',NOMBRE='" + nombre + "',APELLIDO1='" + apellido1 + "',APELLIDO2='" + apellido2 + "',TELEFONO='" + telefono + "',EMAIL='" + email + "' where CEDULA=" + this.cedula;
-        if (cedula.equals("") || nombre.equals("") || apellido1.equals("") || apellido2.equals("") || telefono.equals("") || email.equals("")) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar datos");
-        } else {
-            try {
-                cn = con.conectar();
-                st = cn.createStatement();
-                st.executeUpdate(sql);
-                JOptionPane.showMessageDialog(null, "Usuario actualizado");
-                limpiarTabla();
-            } catch (Exception e) {
-            }
-
-        }
-    }
-
+    
     /**
      * @param args the command line arguments
      */
@@ -423,103 +370,42 @@ public class Frm_cliente extends javax.swing.JFrame {
         });
     }
 
-    //Mostar info
-    void listar() {
-        String sql = "select * from cliente";
+    private void cargarDatos() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Cedula");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido1");
+        modelo.addColumn("Apellido2");
+        modelo.addColumn("Telefono");
+        modelo.addColumn("Email");
 
-        try {
-            cn = con.conectar();
-            st = cn.createStatement();
-            rs = st.executeQuery(sql);
+        try ( Connection connection = ConexionOracle.conectar()) {
+            String sql = "SELECT * FROM VW_DATOS_CLIENTES";
+            try ( PreparedStatement preparedStatement = connection.prepareStatement(sql);  ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            Object[] persona = new Object[WIDTH];
-            modelo = (DefaultTableModel) TableDatos.getModel();
-
-            while (rs.next()) {
-                persona[0] = rs.getInt("CEDULA");
-                persona[1] = rs.getString("NOMBRE");
-                persona[2] = rs.getString("APELLIDO1");
-                persona[3] = rs.getString("APELLIDO2");
-                persona[4] = rs.getString("TELEFONO");
-                persona[5] = rs.getString("EMAIL");
-                modelo.addRow(persona);
+                while (resultSet.next()) {
+                    Object[] fila = new Object[8];
+                    fila[0] = resultSet.getString("Cedula");
+                    fila[1] = resultSet.getString("Nombre");
+                    fila[2] = resultSet.getString("Apellido1");
+                    fila[3] = resultSet.getString("Apellido2");
+                    fila[4] = resultSet.getString("Telefono");
+                    fila[5] = resultSet.getString("Email");
+                    modelo.addRow(fila);
+                }
             }
-            TableDatos.setModel(modelo);
-        } catch (Exception e) {
-        }
-    }
-
-
-    //Argregar info
-    void Agregar() {
-        Integer cedula = Integer.parseInt(txtCedula.getText());
-        String nombre = txtNombre.getText();
-        String apellido1 = txtApellido01.getText();
-        String apellido2 = txtApellido02.getText();
-        String telefono = txtTelefono.getText();
-        String email = txtEmail.getText();
-
-        if (cedula == null || nombre.equals("") || apellido1.equals("") || apellido2.equals("") || telefono.equals("") || email.equals("")) {
-            JOptionPane.showMessageDialog(null, "Faltan Datos");
-        } else {
-            String sql = "insert into cliente(CEDULA,NOMBRE,APELLIDO1,APELLIDO2,TELEFONO,EMAIL)values('" + cedula + "','" + nombre + "','" + apellido1 + "','" + apellido2 + "','" + telefono + "','" + email + "')";
-            try {
-                cn = con.conectar();
-                st = cn.createStatement();
-                st.executeUpdate(sql);
-                JOptionPane.showMessageDialog(null, "Usuario agregado");
-                limpiarTabla();
-            } catch (Exception e) {
-
-            }
-        }
-    }
-    //Limpiar los datos de la tabla
-    void limpiarTabla() {
-        for (int i = 0; i <= TableDatos.getRowCount(); i++) {
-            modelo.removeRow(i);
-            i = i - 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-    }
-    //Elimina los clientes
-
-    void eliminar() {
-        int filaSeleccionado = TableDatos.getSelectedRow();
-        if (filaSeleccionado == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar Fila");
-        } else {
-            String sql = "deletefrom CLIENTE where CEDULA=" + cedula;
-            try {
-                cn = con.conectar();
-                st = cn.createStatement();
-                st.executeUpdate(sql);
-                JOptionPane.showMessageDialog(null, "Cliente eliminado");
-                limpiarTabla();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    //Limpiad los datos de las cajas
-    void nuevo() {
-        txtCedula.setText("");
-        txtNombre.setText("");
-        txtApellido01.setText("");
-        txtApellido02.setText("");
-        txtTelefono.setText("");
-        txtEmail.setText("");
-        txtNombre.requestFocus();
+        jtclientes.setModel(modelo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TableDatos;
-    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton eventoNuevo;
-    private javax.swing.JComboBox<String> jComboBoxFecha;
+    private javax.swing.JButton btnguardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -527,10 +413,10 @@ public class Frm_cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtclientes;
     private javax.swing.JTextField txtApellido01;
     private javax.swing.JTextField txtApellido02;
     private javax.swing.JTextField txtCedula;

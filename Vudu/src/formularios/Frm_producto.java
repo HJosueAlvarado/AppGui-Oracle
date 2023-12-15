@@ -1,13 +1,30 @@
 
 package formularios;
 
+import BD.ConexionOracle;
 import Menu.Inicio;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 
 
 public class Frm_producto extends javax.swing.JFrame {
 
     public Frm_producto() {
         initComponents();
+        
+        cargarDatos();
+
+        // Asociar el evento de clic al botón guardar
+        btnguardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
     }
 
 
@@ -23,16 +40,15 @@ public class Frm_producto extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jtf_id = new javax.swing.JTextField();
-        jtf_nombre = new javax.swing.JTextField();
-        jtf_color = new javax.swing.JTextField();
-        jtf_material = new javax.swing.JTextField();
-        jcb_talla = new javax.swing.JComboBox<>();
+        txtid = new javax.swing.JTextField();
+        txtnombre = new javax.swing.JTextField();
+        txtcolor = new javax.swing.JTextField();
+        txtmaterial = new javax.swing.JTextField();
+        txttalla = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jbtn_guardar = new javax.swing.JButton();
+        jtproductos = new javax.swing.JTable();
+        btnguardar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,19 +90,23 @@ public class Frm_producto extends javax.swing.JFrame {
 
         jLabel6.setText("Talla");
 
-        jtf_id.addActionListener(new java.awt.event.ActionListener() {
+        txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtf_idActionPerformed(evt);
+                txtidActionPerformed(evt);
             }
         });
 
-        jtf_color.addActionListener(new java.awt.event.ActionListener() {
+        txtcolor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtf_colorActionPerformed(evt);
+                txtcolorActionPerformed(evt);
             }
         });
 
-        jcb_talla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "XS", "S", "M", "L", "XL", "XXL" }));
+        txttalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txttallaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -103,15 +123,18 @@ public class Frm_producto extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtf_nombre)
-                    .addComponent(jtf_color)
-                    .addComponent(jtf_material)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcb_talla, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtf_id, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 212, Short.MAX_VALUE)))
-                .addGap(332, 332, 332))
+                            .addComponent(txtnombre)
+                            .addComponent(txtcolor)
+                            .addComponent(txtmaterial)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 212, Short.MAX_VALUE)))
+                        .addGap(332, 332, 332))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txttalla, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,27 +142,27 @@ public class Frm_producto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jtf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtf_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtcolor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jtf_material, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jcb_talla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txttalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtproductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -147,9 +170,14 @@ public class Frm_producto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtproductos);
 
-        jbtn_guardar.setText("Guardar");
+        btnguardar.setText("Guardar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Atrás");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -158,14 +186,12 @@ public class Frm_producto extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Editar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.setText("Limpiar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
-
-        jButton3.setText("Elininar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,9 +208,7 @@ public class Frm_producto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbtn_guardar)
+                        .addComponent(btnguardar)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -194,12 +218,11 @@ public class Frm_producto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtn_guardar)
+                    .addComponent(btnguardar)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addContainerGap())
         );
@@ -207,17 +230,13 @@ public class Frm_producto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtf_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_idActionPerformed
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtf_idActionPerformed
+    }//GEN-LAST:event_txtidActionPerformed
 
-    private void jtf_colorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_colorActionPerformed
+    private void txtcolorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcolorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtf_colorActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_txtcolorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -228,6 +247,84 @@ public class Frm_producto extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void txttallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttallaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txttallaActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        // TODO add your handling code here:
+        int idProducto = Integer.parseInt(txtid.getText());
+        String nombreProducto = txtnombre.getText();
+        String color = txtcolor.getText();
+        String material = txtmaterial.getText();
+        String talla = txttalla.getText();
+
+        try ( Connection connection = ConexionOracle.conectar()) {
+            String sql = "{call INSERTAR_PRODUCTO(?, ?, ?, ?, ?)}";
+            try ( CallableStatement callableStatement = connection.prepareCall(sql)) {
+                callableStatement.setInt(1, idProducto);
+                callableStatement.setString(2, nombreProducto);
+                callableStatement.setString(3, color);
+                callableStatement.setString(4, material);
+                callableStatement.setString(5, talla);
+
+                callableStatement.execute();
+
+                JOptionPane.showMessageDialog(null, "Inserción exitosa", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                // Actualizar el modelo de la tabla después de la inserción
+                cargarDatos();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al insertar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        txttalla.setText("");
+        txtcolor.setText("");
+        txtnombre.setText("");
+        txtmaterial.setText("");
+        txtid.setText("");
+        txtid.requestFocus();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void cargarDatos() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID Producto");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Color");
+        modelo.addColumn("Material");
+        modelo.addColumn("Talla");
+        modelo.addColumn("ID Categoria");
+
+        try ( Connection connection = ConexionOracle.conectar()) {
+            String sql = "SELECT * FROM VW_DATOS_PRODUCTOS";
+            try ( PreparedStatement preparedStatement = connection.prepareStatement(sql);  ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    Object[] fila = new Object[6];
+                    fila[0] = resultSet.getInt("ID Producto");
+                    fila[1] = resultSet.getString("Nombre");
+                    fila[2] = resultSet.getString("Color");
+                    fila[3] = resultSet.getString("Material");
+                    fila[4] = resultSet.getString("Talla");
+                    fila[5] = resultSet.getInt("ID Categoria");
+                    modelo.addRow(fila);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        jtproductos.setModel(modelo);  // Asegúrate de tener un componente llamado jtProductos en tu interfaz gráfica.
+    }
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -264,8 +361,8 @@ public class Frm_producto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnguardar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -276,12 +373,11 @@ public class Frm_producto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JButton jbtn_guardar;
-    private javax.swing.JComboBox<String> jcb_talla;
-    private javax.swing.JTextField jtf_color;
-    private javax.swing.JTextField jtf_id;
-    private javax.swing.JTextField jtf_material;
-    private javax.swing.JTextField jtf_nombre;
+    private javax.swing.JTable jtproductos;
+    private javax.swing.JTextField txtcolor;
+    private javax.swing.JTextField txtid;
+    private javax.swing.JTextField txtmaterial;
+    private javax.swing.JTextField txtnombre;
+    private javax.swing.JTextField txttalla;
     // End of variables declaration//GEN-END:variables
 }
