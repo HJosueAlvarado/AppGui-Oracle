@@ -298,7 +298,6 @@ public class Frm_producto extends javax.swing.JFrame {
         modelo.addColumn("Color");
         modelo.addColumn("Material");
         modelo.addColumn("Talla");
-        modelo.addColumn("ID Categoria");
 
         try ( Connection connection = ConexionOracle.conectar()) {
             String sql = "SELECT * FROM VW_DATOS_PRODUCTOS";
@@ -311,7 +310,6 @@ public class Frm_producto extends javax.swing.JFrame {
                     fila[2] = resultSet.getString("Color");
                     fila[3] = resultSet.getString("Material");
                     fila[4] = resultSet.getString("Talla");
-                    fila[5] = resultSet.getInt("ID Categoria");
                     modelo.addRow(fila);
                 }
             }
